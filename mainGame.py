@@ -2,7 +2,7 @@ import pygame, sys
 
 pygame.init()
 
-resolution = (600,400)
+resolution = (800,800)
 
 white = (255,255,255)
 
