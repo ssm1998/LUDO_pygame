@@ -29,7 +29,8 @@ def drawBoard():
     pygame.draw.polygon(gameDisplay, GREEN, ((4*(WIDTH/11),4*(WIDTH/11)), (4*(WIDTH/11),7*(WIDTH/11)), (5.5*(WIDTH/11),5.5*(WIDTH/11))))
     pygame.draw.polygon(gameDisplay, RED, ((4*(WIDTH/11),7*(WIDTH/11)), (7*(WIDTH/11),7*(WIDTH/11)), (5.5*(WIDTH/11),5.5*(WIDTH/11))))
     pygame.draw.polygon(gameDisplay, BLUE, ((7*(WIDTH/11),4*(WIDTH/11)), (7*(WIDTH/11),7*(WIDTH/11)), (5.5*(WIDTH/11),5.5*(WIDTH/11))))
-
+    
+    #Main Boxes
     pygame.draw.rect(gameDisplay, LIGHTYELLOW, (7*(WIDTH/11),0,4*(WIDTH/11),4*(WIDTH/11)))
     pygame.draw.rect(gameDisplay, LIGHTBLUE, (7*(WIDTH/11),7*(WIDTH/11),4*(WIDTH/11),4*(WIDTH/11)))
     pygame.draw.rect(gameDisplay, LIGHTGREEN, (0,0,4*(WIDTH/11),4*(WIDTH/11)))
@@ -40,15 +41,15 @@ def drawBoard():
     pygame.draw.rect(gameDisplay, GREEN, (0.5*(WIDTH/11),0.5*(WIDTH/11),3*(WIDTH/11),3*(WIDTH/11)))
     pygame.draw.rect(gameDisplay, RED, (0.5*(WIDTH/11),7.5*(WIDTH/11),3*(WIDTH/11),3*(WIDTH/11)))
 
-    pygame.draw.rect(gameDisplay, YELLOW, (5*(WIDTH/11),0,1*(WIDTH/11),4*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, BLUE, (7*(WIDTH/11),5*(WIDTH/11),4*(WIDTH/11),1*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, GREEN, (0,5*(WIDTH/11),4*(WIDTH/11),1*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, RED, (5*(WIDTH/11),7*(WIDTH/11),1*(WIDTH/11),4*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, YELLOW, (5*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11),4*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, BLUE, (7*(WIDTH/11),5*(WIDTH/11),3.5*(WIDTH/11),1*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, GREEN, (0.5*(WIDTH/11),5*(WIDTH/11),4*(WIDTH/11),1*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, RED, (5*(WIDTH/11),7*(WIDTH/11),1*(WIDTH/11),3.5*(WIDTH/11)))
 
-    pygame.draw.rect(gameDisplay, YELLOW, (6*(WIDTH/11),0,1*(WIDTH/11),0.5*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, BLUE, (10.5*(WIDTH/11),6*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, GREEN, (0,4*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11)))
-    pygame.draw.rect(gameDisplay, RED, (4*(WIDTH/11),10.5*(WIDTH/11),1*(WIDTH/11),0.5*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, YELLOW, (6*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11),0.5*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, BLUE, (10*(WIDTH/11),6*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, GREEN, (0.5*(WIDTH/11),4*(WIDTH/11),0.5*(WIDTH/11),1*(WIDTH/11)))
+    pygame.draw.rect(gameDisplay, RED, (4*(WIDTH/11),10*(WIDTH/11),1*(WIDTH/11),0.5*(WIDTH/11)))
 
     pygame.draw.circle(gameDisplay, LIGHTYELLOW, (int(8.25*(WIDTH/11)),int(1.25*(WIDTH/11))),int(0.4*(WIDTH/11)))
     pygame.draw.circle(gameDisplay, LIGHTYELLOW, (int(9.75*(WIDTH/11)),int(1.25*(WIDTH/11))),int(0.4*(WIDTH/11)))
