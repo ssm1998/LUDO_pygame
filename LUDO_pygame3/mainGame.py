@@ -1,6 +1,9 @@
 import pygame, sys,LUDOfunctions
 from LUDOfunctions import *
 
+FPS=30  #frames per second setting
+fpsClock = pygame.time.Clock()
+
 pygame.init()
 
 #COLORS         R   G   B
@@ -16,7 +19,7 @@ BLUE        = (  0,128,255)
 BLACK       = (  0,  0,  0)
 
 #CONSTANTS
-WIDTH = 1100    #Change the value of width in order to adjust your screen surface!(should be divisible by 11)
+WIDTH = 660   #Change the value of width in order to adjust your screen surface!(should be divisible by 11)
 HEIGHT = WIDTH
 
 #Setting up the surface
@@ -131,15 +134,17 @@ def drawBoard():
 
 drawBoard()
 pygame.display.flip()
+color1,color2,color3,color4=playerSpecify()
+countR,countG,countB,countY=initCoins(gameDisplay,WIDTH,color1,color2,color3,color4)
+pygame.display.flip()
+countR,countG,countB,countY,position=updateBoard(countR,countG,countB,countY,gameDisplay,'Green')
+pygame.display.flip()
 while True:
-    
-    
-    color1,color2,color3,color4=playerSpecify()
-    initCoins(gameDisplay,WIDTH,color1,color2,color3,color4)
-    pygame.display.flip()
-    
     for event in pygame.event.get():
+        countR,countG,countB,countY,position=move(event,greenCoin,'Green',countR,countG,countB,countY,position)
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
     pygame.display.flip()
+    fpsClock.tick(FPS)
+    
