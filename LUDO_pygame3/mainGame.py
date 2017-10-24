@@ -134,17 +134,29 @@ def drawBoard():
 
 drawBoard()
 pygame.display.flip()
+print "Hi!! Let's start playing Ludo!!"
 color1,color2,color3,color4=playerSpecify()
-countR,countG,countB,countY=initCoins(gameDisplay,WIDTH,color1,color2,color3,color4)
+countR,countG,countB,countY,players=initCoins(gameDisplay,WIDTH,color1,color2,color3,color4)
 pygame.display.flip()
-countR,countG,countB,countY,position=updateBoard(countR,countG,countB,countY,gameDisplay,'Green')
-pygame.display.flip()
+n = len(players)
+i=0
 while True:
-    for event in pygame.event.get():
-        countR,countG,countB,countY,position=move(event,greenCoin,'Green',countR,countG,countB,countY,position)
+    
+        event= pygame.event.poll()
+        
+        if(event.type==pygame.KEYDOWN and event.key == pygame.K_SPACE):
+            i=(i+1)%n
+            print "player",i,"'s turn"
+            if(not players[i].started):
+                if(startGame(event)):
+                    players[i].started=True
+                    countR,countG,countB,countY=getStarted(players[i],countR,countG,countB,countY)
+                    updateBoard(countR,countG,countB,countY,gameDisplay,players)
+            else:
+                countR,countG,countB,countY,players[i]=move(event,players[i],countR,countG,countB,countY,players)
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    pygame.display.flip()
-    fpsClock.tick(FPS)
+        pygame.display.flip()
+        fpsClock.tick(FPS)
     

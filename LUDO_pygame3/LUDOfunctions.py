@@ -2,6 +2,72 @@ import random,pygame
 
 pygame.init()
 
+#classes
+
+class player:
+	'''This class keeps on updating the status of the player'''
+	def __init__(self, color,number,pos,width,started=False):
+		self.color = color
+		self.started=started
+		self.number=number
+		self.coins=[]
+		for i in range(4):
+			self.coins.append(coin(color,self.number,i+1,pos,width))
+
+class coin:
+	def __init__(self,color,player,number,pos,width):
+		self.color=color
+		self.player=player
+		self.number=number
+		self.positionIn=0
+		self.position=0
+		if(self.color=='Green'):
+			
+			self.pos=pos
+			self.posIn=[]
+			for i in range(7):
+				self.posIn.append([pos[i][0],pos[i][1]+width/11])
+
+		elif(self.color=='Red'):
+			
+			self.pos=pos[51:68]+pos[:51]
+			self.posIn=[]
+			for i in range(7):
+				self.posIn.append([pos[i][0]+width/11,pos[i][1]])
+			
+		elif(self.color=='Blue'):
+			
+			self.pos=pos[34:68]+pos[:34]
+			self.posIn=[]
+			for i in range(7):
+				self.posIn.append([pos[i][0],pos[i][1]-width/11])
+		elif(self.color=='Yellow'):
+			
+			self.pos=pos[17:68]+pos[:17]
+			self.posIn=[]
+			for i in range(7):
+				self.posIn.append([pos[i][0]-width/11,pos[i][1]])
+		
+
+	def move(self,roll,display):
+		self.position=self.position+roll
+		if(self.position<68):
+			display.blit(eval(self.color+"Coin"),self.pos[self.position])
+		else:
+			if(self.positionIn==0):
+				self.positionIn=68-self.position
+			else:
+				self.positionIn=self.positionIn+roll
+			if(self.positionIn<7):
+				display.blit(eval(self.color+"Coin"),self.posIn[self.positionIn])
+
+	def draw(self,display):
+		if(self.position<68):
+			display.blit(eval(self.color+"Coin"),self.pos[self.position])
+		else:
+			display.blit(eval(self.color+"Coin"),self.posIn[self.positionIn])
+
+
 #COLORS         R   G   B
 WHITE       = (255,255,255)
 LIGHTGREEN  = (153,255,153)
@@ -16,10 +82,10 @@ BLACK       = (  0,  0,  0)
 
 # initialising coin images
 
-greenCoin=pygame.image.load('greencoin.png')
-yellowCoin=pygame.image.load('yellowcoin.png')
-redCoin=pygame.image.load('redcoin.png')
-blueCoin=pygame.image.load('bluecoin.png')
+GreenCoin=pygame.image.load('greencoin.png')
+YellowCoin=pygame.image.load('yellowcoin.png')
+RedCoin=pygame.image.load('redcoin.png')
+BlueCoin=pygame.image.load('bluecoin.png')
 
 
 #CONSTANTS
@@ -148,7 +214,7 @@ def genPos():
 	for i in range(len(pos)):
 		l.append(())
 		for j in pos[i]:
-			l[i]+=(j*660/1100,)
+			l[i]+=(j*WIDTH /1100,)
 	return l
 pos=genPos()
 print pos
@@ -207,44 +273,56 @@ def initCoins(gameDisplay,WIDTH,color1='',color2='',color3='',color4=''):
 	countY=0
 	countG=0
 	countR=0
+	players=[]
 	if('Yellow' in l):
-		gameDisplay.blit(yellowCoin,(825*WIDTH/1100-20,125*WIDTH/1100-28))
-		gameDisplay.blit(yellowCoin,(975*WIDTH/1100-20,125*WIDTH/1100-28))
-		gameDisplay.blit(yellowCoin,(825*WIDTH/1100-20,275*WIDTH/1100-28)) 
-		gameDisplay.blit(yellowCoin,(975*WIDTH/1100-20,275*WIDTH/1100-28))
+		gameDisplay.blit(YellowCoin,(825*WIDTH/1100-20,125*WIDTH/1100-28))
+		gameDisplay.blit(YellowCoin,(975*WIDTH/1100-20,125*WIDTH/1100-28))
+		gameDisplay.blit(YellowCoin,(825*WIDTH/1100-20,275*WIDTH/1100-28)) 
+		gameDisplay.blit(YellowCoin,(975*WIDTH/1100-20,275*WIDTH/1100-28))
 		countY=4
 	if('Blue' in l):
-		gameDisplay.blit(blueCoin,(int(8.25*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
-		gameDisplay.blit(blueCoin,(int(9.75*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
-		gameDisplay.blit(blueCoin,(int(8.25*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28)) 
-		gameDisplay.blit(blueCoin,(int(9.75*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
+		gameDisplay.blit(BlueCoin,(int(8.25*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
+		gameDisplay.blit(BlueCoin,(int(9.75*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
+		gameDisplay.blit(BlueCoin,(int(8.25*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28)) 
+		gameDisplay.blit(BlueCoin,(int(9.75*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
 		countB=4
 	if('Red' in l):
-		gameDisplay.blit(redCoin,(int(1.25*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
-		gameDisplay.blit(redCoin,(int(1.25*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
-		gameDisplay.blit(redCoin,(int(2.75*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
-		gameDisplay.blit(redCoin,(int(2.75*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
+		gameDisplay.blit(RedCoin,(int(1.25*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
+		gameDisplay.blit(RedCoin,(int(1.25*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
+		gameDisplay.blit(RedCoin,(int(2.75*(WIDTH/11)-20),int(8.25*(WIDTH/11))-28))
+		gameDisplay.blit(RedCoin,(int(2.75*(WIDTH/11)-20),int(9.75*(WIDTH/11))-28))
 		countR=4
 	if('Green' in l):
-		gameDisplay.blit(greenCoin,(int(1.25*(WIDTH/11)-20),int(1.25*(WIDTH/11))-28))
-		gameDisplay.blit(greenCoin,(int(2.75*(WIDTH/11)-20),int(1.25*(WIDTH/11))-28))
-		gameDisplay.blit(greenCoin,(int(1.25*(WIDTH/11)-20),int(2.75*(WIDTH/11))-28))
-		gameDisplay.blit(greenCoin,(int(2.75*(WIDTH/11)-20),int(2.75*(WIDTH/11))-28))
+		gameDisplay.blit(GreenCoin,(int(1.25*(WIDTH/11)-20),int(1.25*(WIDTH/11))-28))
+		gameDisplay.blit(GreenCoin,(int(2.75*(WIDTH/11)-20),int(1.25*(WIDTH/11))-28))
+		gameDisplay.blit(GreenCoin,(int(1.25*(WIDTH/11)-20),int(2.75*(WIDTH/11))-28))
+		gameDisplay.blit(GreenCoin,(int(2.75*(WIDTH/11)-20),int(2.75*(WIDTH/11))-28))
 		countG=4
-	return [countR,countG,countB,countY]
+	
+	for i in l:
+		if(i!=''):
+			players.append(player(i,l.index(i)+1,pos,WIDTH))
+	return [countR,countG,countB,countY,players]
 
-def updateBoard(countR,countG,countB,countY,gameDisplay,color=''):
+def getStarted(player,countR,countG,countB,countY):
 	'''
 	Moves coins from the square to the start position on the board
 	'''
-	if(color=='Red'):
+	if(player.color=='Red' and countR!=0):
 		countR-=1
-	elif(color=='Yellow'):
+	elif(player.color=='Yellow' and countY!=0):
 		countY-=1
-	elif(color=='Blue'):
+	elif(player.color=='Blue' and countB!=0):
 		countB-=1
-	elif(color=='Green'):
+	elif(player.color=='Green' and countG!=0):
 		countG-=1
+	print (countR,countG,countB,countY)
+	return (countR,countG,countB,countY)
+
+def updateBoard(countR,countG,countB,countY,gameDisplay,players):
+	'''
+	redraws the bard with all the coins after they have moved to their respective positions
+	'''
 	
 	YPos=[[825*WIDTH/1100-20,125*WIDTH/1100-28],[975*WIDTH/1100-20,125*WIDTH/1100-28],
 	[825*WIDTH/1100-20,275*WIDTH/1100-28],[975*WIDTH/1100-20,275*WIDTH/1100-28]]
@@ -260,112 +338,157 @@ def updateBoard(countR,countG,countB,countY,gameDisplay,color=''):
 	
 	drawBoard()
 	for i in range(countR):
-			gameDisplay.blit(redCoin,(RPos[i][0],RPos[i][1]))
+			gameDisplay.blit(RedCoin,(RPos[i][0],RPos[i][1]))
 	for i in range(countY):
-			gameDisplay.blit(yellowCoin,(YPos[i][0],YPos[i][1]))
+			gameDisplay.blit(YellowCoin,(YPos[i][0],YPos[i][1]))
 	for i in range(countB):
-			gameDisplay.blit(blueCoin,(BPos[i][0],BPos[i][1]))
+			gameDisplay.blit(BlueCoin,(BPos[i][0],BPos[i][1]))
 	for i in range(countG):
-			gameDisplay.blit(greenCoin,(GPos[i][0],GPos[i][1]))
+			gameDisplay.blit(GreenCoin,(GPos[i][0],GPos[i][1]))
 	pygame.display.flip()
 	
-	if(color=='Red'):
-		gameDisplay.blit(redCoin,pos[-17])
-		position=-17
-	elif(color=='Yellow'):
-		gameDisplay.blit(yellowCoin,pos[17])
-		position=17
-	elif(color=='Blue'):
-		gameDisplay.blit(blueCoin,pos[34])
-		position=34
-	elif(color=='Green'):
-		gameDisplay.blit(greenCoin,pos[0])
-		position=0
-	else:
-		position=-1
+	for i in players:
+		if(i.color=='Red'):
+			for j in range(4-countR):
+				i.coins[j].draw(gameDisplay)
+		if(i.color=='Blue'):
+			for j in range(4-countB):
+				i.coins[j].draw(gameDisplay)
+		if(i.color=='Green'):
+			for j in range(4-countG):
+				i.coins[j].draw(gameDisplay)
+		if(i.color=='Yellow'):
+			for j in range(4-countY):
+				i.coins[j].draw(gameDisplay)
+		
 	print 'updated!'
 	pygame.display.flip()
-	return (countR,countG,countB,countY,position)
+	
 
-def move(event,coin,color,countR,countG,countB,countY,origPos):
-	newPos=origPos
+def move(event,player,countR,countG,countB,countY,players):
 	if(event.type==pygame.KEYDOWN and event.key == pygame.K_SPACE):
-		(countR,countG,countB,countY,_)=updateBoard(countR,countG,countB,countY,gameDisplay)
+		
 		pygame.display.flip()
 		rolls = rollingDie()
 		for i in rolls:
 			if(i!=6):
-				newPos=origPos+i
-				if(color=='Red'):
-					gameDisplay.blit(redCoin,pos[newPos])
-				elif(color=='Yellow'):
-					gameDisplay.blit(yellowCoin,pos[newPos])
-				elif(color=='Blue'):
-					gameDisplay.blit(blueCoin,pos[newPos])
-				elif(color=='Green'):
-					gameDisplay.blit(greenCoin,pos[newPos])
+				if(player.color=='Red'):
+					if(countR<=2):
+						print "enter the coin number which you want to move from ",range(4-countR)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+					else:
+						player.coins[0].move(i,gameDisplay)
+				if(player.color=='Yellow'):
+					if(countY<=2):
+						print "enter the coin number which you want to move from ",range(4-countY)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+					else:
+						player.coins[0].move(i,gameDisplay)
+				if(player.color=='Green'):
+					if(countG<=2):
+						print "enter the coin number which you want to move from ",range(4-countG)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+					else:
+						player.coins[0].move(i,gameDisplay)
+				if(player.color=='Blue'):
+					if(countB<=2):
+						print "enter the coin number which you want to move from ",range(4-countB)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+					else:
+						player.coins[0].move(i,gameDisplay)
+				
 			else:
 				
-				if(color=='Red'):
+				if(player.color=='Red'):
 					if(countR>0):
 						ans=raw_input('do you want to move a coin or remove another one?new(n)/continue(c):')
 						if(ans=='n'):
-							(countR,countG,countB,countY,position)=updateBoard(countR,countG,countB,countY,gameDisplay,color)
-							newPos=origPos
+							countR,countG,countB,countY=getStarted(player,countR,countG,countB,countY)
+							updateBoard(countR,countG,countB,countY,gameDisplay,players)
+							
 						else:
-							gameDisplay.blit(redCoin,pos[origPos+i])
-							newPos=origPos+i
+							if(countR<=2):
+								print "enter the coin number which you want to move from ",range(4-countR)
+								n=input()
+								player.coins[n].move(i,gameDisplay)
+							else:
+								player.coins[0].move(i,gameDisplay)
 					else:
-						gameDisplay.blit(redCoin,pos[origPos+i])
-						newPos=origPos+i
-				if(color=='Yellow'):
+						print "enter the coin number which you want to move from ",range(4-countR)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+				if(player.color=='Yellow'):
 					if(countY>0):
 						ans=raw_input('do you want to move a coin or remove another one?new(n)/continue(c):')
 						if(ans=='n'):
-							newPos=origPos
-							(countR,countG,countB,countY,position)=updateBoard(countR,countG,countB,countY,gameDisplay,color)
+							countR,countG,countB,countY=getStarted(player,countR,countG,countB,countY)
+							updateBoard(countR,countG,countB,countY,gameDisplay,players)
+							
 						else:
-							newPos=origPos+i
-							gameDisplay.blit(yellowCoin,pos[origPos+i])
+							if(countY<=2):
+								print "enter the coin number which you want to move from ",range(4-countY)
+								n=input()
+								player.coins[n].move(i,gameDisplay)
+							else:
+								player.coins[0].move(i,gameDisplay)
 					else:
-						newPos=origPos+i
-						gameDisplay.blit(yellowCoin,pos[origPos+i])
-				if(color=='Blue'):
+						print "enter the coin number which you want to move from ",range(4-countY)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+				if(player.color=='Blue'):
 					if(countB>0):
 						ans=raw_input('do you want to move a coin or remove another one?new(n)/continue(c):')
 						if(ans=='n'):
-							newPos=origPos
-							(countR,countG,countB,countY,position)=updateBoard(countR,countG,countB,countY,gameDisplay,color)
+							countR,countG,countB,countY=getStarted(player,countR,countG,countB,countY)
+							updateBoard(countR,countG,countB,countY,gameDisplay,players)
+							
 						else:
-							newPos=origPos+i
-							gameDisplay.blit(blueCoin,pos[origPos+i])
+							if(countB<=2):
+								print "enter the coin number which you want to move from ",range(4-countB)
+								n=input()
+								player.coins[n].move(i,gameDisplay)
+							else:
+								player.coins[0].move(i,gameDisplay)
 					else:
-						newPos=origPos+i
-						gameDisplay.blit(blueCoin,pos[origPos+i])
-				if(color=='Green'):
+						print "enter the coin number which you want to move from ",range(4-countB)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+				if(player.color=='Green'):
 					if(countG>0):
 						ans=raw_input('do you want to move a coin or remove another one?new(n)/continue(c):')
 						if(ans=='n'):
-							newPos=origPos
-							(countR,countG,countB,countY,position)=updateBoard(countR,countG,countB,countY,gameDisplay,color)
+							countR,countG,countB,countY=getStarted(player,countR,countG,countB,countY)
+							updateBoard(countR,countG,countB,countY,gameDisplay,players)
+							
 						else:
-							newPos=origPos+i
-							gameDisplay.blit(greenCoin,pos[origPos+i])
+							if(countG<=2):
+								print "enter the coin number which you want to move from ",range(4-countG)
+								n=input()
+								player.coins[n].move(i,gameDisplay)
+							else:
+								player.coins[0].move(i,gameDisplay)
 					else:
-						newPos=origPos+i
-						gameDisplay.blit(greenCoin,pos[origPos+i])
+						print "enter the coin number which you want to move from ",range(4-countR)
+						n=input()
+						player.coins[n].move(i,gameDisplay)
+	updateBoard(countR,countG,countB,countY,gameDisplay,players)
 	pygame.display.flip()
-	return (countR,countG,countB,countY,newPos)		
+	return (countR,countG,countB,countY,player)		
 
 
 
-def startGame():
+def startGame(event):
 	'''
 	You get to start the game only if you get a six!
 	'''
-	if random.randint(1,6) == 6:
-		print "You got a six ! Start the game !"
-		return True
+	if(event.type==pygame.KEYDOWN and event.key == pygame.K_SPACE):
+		if random.randint(1,6) == 6:
+			print "You got a six ! Start the game !"
+			return True
 
 
 def rollingDie():
